@@ -1,0 +1,121 @@
+#!/bin/bash
+#
+
+##########diy opt##########
+ISSUEDIR='issuepack'
+###########################
+PWD_HOME=`pwd`
+cd ~
+USER_HOME=`pwd`
+cd $PWD_HOME
+#############
+
+ISLOGIN=false
+ALLCODE=false
+
+while getopts "v:s:la" arg;
+do
+  case $arg in
+    "v")
+      LASTVER="$OPTARG" ;;
+    "s")
+      SERVER="$OPTARG" ;;
+    "l")
+      ISLOGIN=true ;;
+    "a")
+      ALLCODE=true ;;
+    "?")
+      echo "Usege: issuecode [-v] [-s] [-l] [-a]"
+      echo "eg: issuecode -v 9867e -s server1 -l"
+      exit 1 ;;
+  esac
+done
+
+
+function WHERE_PROJECT_HOME(){
+  ISGIT=false
+  GITPATH=$1
+  
+  if [ $GITPATH = '/' ]; then
+    echo "The current path is not a git management project!"
+    exit 1
+  fi
+
+  a=`ls -a $GITPATH`
+  for b in $a
+  do
+    if [ $b = '.git' ]; then
+      ISGIT=true
+      break
+    fi
+  done
+
+  if [ $ISGIT = true ]; then
+    PROJECT_HOME=$GITPATH
+  else
+    PARENT=`dirname $GITPATH`
+    WHERE_PROJECT_HOME $PARENT
+  fi
+}
+
+
+function UPDATE_PACKNAME(){
+  TIME=$(date +%Y%m%d%H%M%S)
+  PROJECTNAME=`basename $PROJECT_HOME`
+
+  if [ $ALLCODE = true ]; then
+    PACKNAME="$PROJECTNAME-$TIME.zip"
+  else
+    PACKNAME="$PROJECTNAME-$VERSION-$TIME.zip"
+  fi
+
+  if [ -n "$USER_HOME/$ISSUEDIR" ]; then
+    mkdir -p $USER_HOME/$ISSUEDIR
+  fi
+  
+  PACKPATH="$USER_HOME/$ISSUEDIR/$PACKNAME"
+}
+
+function GET_VERSION(){
+  if [ -n "$LASTVER" ]; then
+    VERSION=$LASTVER
+    LASTVER="HEAD $LASTVER"
+  else
+    VERSION='HEAD'
+    LASTVER='HEAD^ HEAD'
+  fi
+}
+
+function OUTPUT_CODE(){
+  cd $PROJECT_HOME
+  git pull
+  #git archive -o $PACKPATH HEAD $(git diff --name-only $LASTVER)
+  if [ $ALLCODE = true ]; then
+    git archive --format zip --output $PACKPATH master -0
+  else
+    git diff --name-only $LASTVER | xargs zip -r $PACKPATH
+  fi
+
+  echo "Packname: $PACKNAME"
+  echo "Path: $PACKPATH"
+}
+
+function SSH_SEND_PACK(){
+  if [ -n "$SERVER" ]; then
+    echo "Ssh Upload: scp $PACKPATH $SERVER:~/"
+    scp $PACKPATH $SERVER:~/
+  fi
+
+  if [ $ISLOGIN = true ]; then
+    echo "Login $SERVER ..."
+    ssh $SERVER
+  fi
+}
+
+
+WHERE_PROJECT_HOME $PWD_HOME
+
+GET_VERSION
+UPDATE_PACKNAME
+OUTPUT_CODE
+SSH_SEND_PACK
