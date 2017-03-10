@@ -4,6 +4,8 @@
 ##########diy opt##########
 ISSUEDIR='issuepack'
 ###########################
+VERSION='0.0.8'
+###########################
 PWD_HOME=`pwd`
 cd ~
 USER_HOME=`pwd`
