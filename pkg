@@ -4,7 +4,8 @@
 ##########diy opt##########
 ISSUEDIR='issuepack'
 ###########################
-VERSION='0.0.8'
+VERSION='0.0.9'
+FILENAME=$0
 ###########################
 PWD_HOME=`pwd`
 cd ~
@@ -27,8 +28,8 @@ do
     "a")
       ALLCODE=true ;;
     "?")
-      echo "Usege: pkg [-v] [-s] [-l] [-a]"
-      echo "eg: pkg -v 9867e -s server1 -l"
+      echo "Usege: $FILENAME [-v] [-s] [-l] [-a]"
+      echo "eg: $FILENAME -v 9867e -s server1 -l"
       exit 1 ;;
   esac
 done
@@ -114,9 +115,13 @@ function SSH_SEND_PACK(){
   fi
 }
 
+function DISPLAY_TOOL_VERSION(){
+    echo "$FILENAME Ver $VERSION"
+}
 
 WHERE_PROJECT_HOME $PWD_HOME
 
+DISPLAY_TOOL_VERSION
 GET_VERSION
 UPDATE_PACKNAME
 OUTPUT_CODE
