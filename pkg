@@ -2,9 +2,9 @@
 #
 
 ##########diy opt##########
-ISSUEDIR='issuepack'
+PUBDIR='pubcode'
 ###########################
-VERSION='0.0.10'
+VERSION='0.0.11'
 FILENAME=$0
 ###########################
 PWD_HOME=`pwd`
@@ -72,11 +72,11 @@ function UPDATE_PACKNAME(){
     PACKNAME="$PROJECTNAME-$VERSION-$TIME.zip"
   fi
 
-  if [ -n "$USER_HOME/$ISSUEDIR" ]; then
-    mkdir -p $USER_HOME/$ISSUEDIR
+  if [ -n "$USER_HOME/$PUBDIR" ]; then
+    mkdir -p $USER_HOME/$PUBDIR
   fi
 
-  PACKPATH="$USER_HOME/$ISSUEDIR/$PACKNAME"
+  PACKPATH="$USER_HOME/$PUBDIR/$PACKNAME"
 }
 
 function GET_VERSION(){

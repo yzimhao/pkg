@@ -19,10 +19,11 @@ chmod +x /usr/bin/pkg
 进入你的git项目任意目录，执行pkg命令:
 ```shell
 [baby@localhost pkg]$ pkg
-/usr/bin/pkg Ver 0.0.9
+/usr/bin/pkg Ver 0.0.10
 Already up-to-date.
+  adding: README.md (deflated 29%)
   adding: package.json (deflated 43%)
   adding: pkg (deflated 60%)
-Filename: pkg-HEAD-20170310113109.zip
-Path: /home/baby/issuepack/pkg-HEAD-20170310113109.zip
+Filename: pkg-HEAD-20170310113945.zip
+Path: /home/baby/pubcode/pkg-HEAD-20170310113945.zip
 ```
