@@ -4,7 +4,7 @@
 ##########diy opt##########
 ISSUEDIR='issuepack'
 ###########################
-VERSION='0.0.9'
+VERSION='0.0.10'
 FILENAME=$0
 ###########################
 PWD_HOME=`pwd`
@@ -99,7 +99,7 @@ function OUTPUT_CODE(){
     git diff --name-only $LASTVER | xargs zip -r $PACKPATH
   fi
 
-  echo "Packname: $PACKNAME"
+  echo "Filename: $PACKNAME"
   echo "Path: $PACKPATH"
 }
 
